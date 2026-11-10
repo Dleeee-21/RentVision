@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Saya — RentVision</title>
+  <link rel="icon" type="image/png" sizes="256x256" href="/pkk/rentvision-favicon.png">
+  <link rel="stylesheet" href="jelajahi.css">
+  <style>
+    .empty-booking{
+      min-height:62vh;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:40px 20px;
+    }
+    .empty-icon{
+      width:96px;height:96px;border-radius:50%;
+      background:var(--bg-panel);border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;margin-bottom:24px;
+    }
+    .empty-icon svg{width:42px;height:42px;color:var(--accent-2);opacity:.85;}
+    .empty-booking h2{font-size:22px;font-weight:600;color:var(--text);margin-bottom:10px;}
+    .empty-booking p{font-size:14px;color:var(--text-dim);max-width:420px;line-height:1.6;margin-bottom:26px;}
+    .empty-cta{
+      display:inline-flex;align-items:center;gap:8px;
+      background:var(--accent-grad);color:#fff;font-size:14px;font-weight:600;
+      padding:12px 28px;border-radius:10px;
+      transition:filter .2s,transform .2s;
+    }
+    .empty-cta:hover{filter:brightness(1.12);transform:translateY(-1px);}
+    .empty-cta svg{width:16px;height:16px;}
+
+    /* success banner */
+    .success-banner{
+      display:none; align-items:flex-start; gap:12px;
+      background:rgba(53,201,143,.1); border:1px solid rgba(53,201,143,.35);
+      border-radius:14px; padding:16px 18px; margin-bottom:22px;
+    }
+    .success-banner .sb-icon{
+      width:38px;height:38px;border-radius:50%;flex-shrink:0;
+      background:rgba(53,201,143,.18); border:1px solid var(--success);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .success-banner .sb-icon svg{width:18px;height:18px;color:var(--success);}
+    .success-banner h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;}
+    .success-banner p{font-size:13px;color:var(--text-dim);line-height:1.5;}
+    .success-banner .sub{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:12px;font-weight:600;color:var(--success);
+      background:rgba(53,201,143,.12);padding:5px 10px;border-radius:8px;
+      margin-top:8px;
+    }
+
+    #bookingList{display:grid;gap:16px;}
+    .bk-card{
+      display:flex;align-items:center;gap:16px;
+      background:var(--bg-panel);border:1px solid var(--border);
+      border-radius:16px;padding:14px 16px;
+      transition:border-color .2s, transform .2s;
+    }
+    .bk-card:hover{border-color:var(--accent-2);transform:translateY(-2px);}
+    .bk-card img{width:88px;height:88px;border-radius:12px;object-fit:cover;background:var(--bg-panel-2);flex-shrink:0;}
+    .bk-info{flex:1;min-width:0;}
+    .bk-top{display:flex;align-items:center;gap:10px;margin-bottom:3px;}
+    .bk-top h4{font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .bk-badge{flex-shrink:0;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:20px;}
+    .bk-badge.waiting{background:rgba(255,186,0,.12);color:#ffba00;border:1px solid rgba(255,186,0,.3);}
+    .bk-badge.pending{background:rgba(91,110,255,.12);color:var(--accent-2);border:1px solid rgba(91,110,255,.3);}
+    .bk-badge.confirmed{background:rgba(53,201,143,.12);color:var(--success);border:1px solid rgba(53,201,143,.3);}
+    .bk-badge.active{background:rgba(91,110,255,.12);color:var(--accent-2);border:1px solid rgba(91,110,255,.3);}
+    .bk-badge.cancelled{background:rgba(255,92,92,.12);color:#ff5c5c;border:1px solid rgba(255,92,92,.3);}
+    .bk-badge.done{background:rgba(53,201,143,.12);color:var(--success);border:1px solid rgba(53,201,143,.3);}
+    .bk-badge.expired{background:rgba(255,182,61,.12);color:#ffb63d;border:1px solid rgba(255,182,61,.3);}
+    .bk-rate{
+      display:flex;align-items:center;gap:6px;flex-shrink:0;
+      background:transparent;color:var(--text-dim);border:1px solid var(--border);cursor:pointer;
+      font-size:12px;font-weight:600;padding:7px 12px;border-radius:8px;
+      transition:color .15s,border-color .15s;
+    }
+    .bk-rate svg{width:13px;height:13px;}
+    .bk-rate:hover{color:var(--text);border-color:var(--accent-2);}
+    .bk-rate-list{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;}
+    .bk-rated{font-size:11.5px;font-weight:600;color:var(--star);white-space:nowrap;}
+    .rate-overlay{
+      position:fixed;inset:0;z-index:200;display:none;
+      align-items:center;justify-content:center;padding:20px;
+      background:rgba(0,0,0,.6);
+    }
+    .rate-overlay.active{display:flex;}
+    .rate-box{
+      width:100%;max-width:340px;background:var(--bg-panel);border:1px solid var(--border);
+      border-radius:12px;padding:20px;
+    }
+    .rate-box h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;}
+    .rate-box .prod{font-size:12px;color:var(--text-dim);margin-bottom:14px;}
+    .rate-stars{display:flex;gap:2px;margin-bottom:12px;}
+    .rate-star{
+      border:none;background:none;padding:2px;cursor:pointer;line-height:0;
+      color:var(--text-dimmer);transition:color .15s;
+    }
+    .rate-star svg{width:26px;height:26px;}
+    .rate-star:hover{color:var(--text-dim);}
+    .rate-star:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px;border-radius:4px;}
+    .rate-star.on{color:var(--star);}
+    .rate-box textarea{
+      width:100%;min-height:68px;resize:vertical;box-sizing:border-box;
+      background:var(--bg-panel-2);border:1px solid var(--border);border-radius:8px;
+      color:var(--text);font-size:13px;font-family:inherit;padding:9px 11px;margin-bottom:8px;
+    }
+    .rate-error{font-size:12px;color:#ff5c5c;margin-bottom:8px;min-height:16px;}
+    .rate-actions{display:flex;justify-content:flex-end;gap:8px;}
+    .rate-actions button{
+      border:none;border-radius:8px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer;
+    }
+    .rate-cancel{background:transparent;color:var(--text-dim);}
+    .rate-cancel:hover{color:var(--text);}
+    .rate-save{background:var(--accent-2);color:#fff;}
+    .rate-save:hover{filter:brightness(1.08);}
+    .rate-save:disabled{opacity:.5;cursor:not-allowed;}
+    .bk-code{font-size:11px;color:var(--text-dimmer);font-weight:600;margin-bottom:6px;font-variant-numeric:tabular-nums;}
+    .bk-meta{display:flex;gap:14px;font-size:12px;color:var(--text-dim);flex-wrap:wrap;}
+    .bk-price{font-size:15px;font-weight:800;color:var(--text);white-space:nowrap;}
+
+    @media (max-width:520px){
+      .bk-card{flex-wrap:wrap;align-items:flex-start;}
+      .bk-price{width:100%;padding-top:6px;border-top:1px dashed var(--border);}
+      .bk-rate-list{width:100%;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><img src="../Rentvision logo.png" alt="RentVision"></div>
+        <div class="brand-name">Rent<span>Vision</span></div>
+      </div>
+
+      <nav class="nav-group">
+        <a class="nav-item" href="../index.php">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="jelajahi.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="4"/><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"/></svg>
+          Jelajahi Gear
+        </a>
+        <a class="nav-item active" href="booking.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Booking Saya
+        </a>
+        <a class="nav-item" href="wishlist.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9Z"/></svg>
+          Wishlist
+        </a>
+        <a class="nav-item" href="ulasan.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 3.1 6.3 7 1-5 4.9 1.2 6.9-6.3-3.3-6.3 3.3 1.2-6.9-5-4.9 7-1Z"/></svg>
+          Ulasan
+        </a>
+      </nav>
+
+      <div class="nav-divider"></div>
+
+      <nav class="nav-group">
+        <a class="nav-item" href="partner.php">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg>
+          Menjadi Partner
+        </a>
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+          Pengaturan
+        </a>
+      </nav>
+
+      <div class="toggle-row">
+        <div class="left">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+          <span id="themeLabel">Mode Gelap</span>
+        </div>
+        <div class="switch" id="themeToggle"></div>
+      </div>
+
+      <div class="promo-card">
+        <h4>Butuh Gear Profesional?</h4>
+        <p>Sewa peralatan fotografi terbaik untuk hasil terbaik.</p>
+        <a class="btn-solid" href="jelajahi.html">Jelajahi Sekarang</a>
+      </div>
+
+      <div class="footnote">&copy; 2026 RentVision<br>All rights reserved.</div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- MAIN -->
+    <main class="main">
+      <header class="topbar">
+        <button class="hamburger" id="hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+
+        <div class="search-nav-wrap">
+          <div class="search-nav-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="color:#6c6c82;flex-shrink:0;"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="navSearchInput" placeholder="Cari kamera, lensa, brand..." autocomplete="off"/>
+            <button class="search-clear hidden" id="navSearchClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+          </div>
+        </div>
+
+        <nav class="topnav">
+          <a href="../index.php">Beranda</a>
+          <a href="jelajahi.html">Jelajahi</a>
+          <a href="#">Cara Kerja</a>
+          <a href="partner.php">Menjadi Partner</a>
+        </nav>
+
+        <div class="top-actions">
+          <div class="user-chip" id="userChip">
+            <img src="../John Carlton.jpg" alt="Fadly Bisma" id="userAvatar">
+            <span id="userNameTop">Fadly Bisma</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          <div class="profile-dropdown" id="profileDropdown">
+            <div class="profile-header">
+              <img src="../John Carlton.jpg" alt="Fadly Bisma" class="profile-avatar">
+              <div class="profile-info">
+                <div class="profile-name" id="profileName">Fadly Bisma</div>
+                <div class="profile-email" id="profileEmail">fadly@rentvision.id</div>
+                <span class="badge active" id="profileRole">Developer</span>
+              </div>
+            </div>
+            <div class="profile-divider"></div>
+            <a class="profile-menu-item" href="profile.php">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+              Profil Saya
+            </a>
+            <div class="profile-divider"></div>
+            <a class="profile-menu-item" href="logout.php">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+              Keluar
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <div class="page-head">
+          <div>
+            <h1>Booking Saya</h1>
+          </div>
+        </div>
+
+        <!-- SUCCESS BANNER -->
+        <div class="success-banner" id="successBanner">
+          <div class="sb-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <h3>Booking berhasil dibuat!</h3>
+            <p>Pembayaran berhasil diproses. Gear Anda langsung aktif dan siap digunakan.</p>
+            <span class="sub">Kode Booking: <strong id="successCode">RV-2026-XXXX</strong></span>
+          </div>
+        </div>
+
+        <!-- BOOKING LIST -->
+        <div id="bookingList" style="display:none;"></div>
+
+        <!-- EMPTY STATE -->
+        <div class="empty-booking" id="emptyBooking">
+          <div class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>
+          </div>
+          <h2>anda belum melakukan booking</h2>
+          <p>Silakan jelajahi gear kami untuk mulai melakukan booking pertama Anda.</p>
+          <a class="empty-cta" href="jelajahi.html">
+            Jelajahi Gear
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- BOTTOM NAV (mobile) -->
+  <nav class="bottom-nav">
+    <a class="bottom-nav-item" href="../index.php">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg>
+      <span>Home</span>
+    </a>
+    <a class="bottom-nav-item" href="jelajahi.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <span>Jelajahi</span>
+    </a>
+    <a class="bottom-nav-item active" href="booking.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      <span>Booking</span>
+    </a>
+    <a class="bottom-nav-item" href="wishlist.html">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9Z"/></svg>
+      <span>Wishlist</span>
+    </a>
+    <a class="bottom-nav-item" href="#">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 1 0-16 0"/></svg>
+      <span>Profil</span>
+    </a>
+  </nav>
+
+  <script src="booking.js"></script>
+  <script src="vendor-nav.js"></script>
+  <div class="rate-overlay" id="ratingModal">
+    <div class="rate-box">
+      <h3>Beri Rating Produk</h3>
+      <div class="prod" id="ratingProductName">Produk</div>
+      <div class="rate-stars" id="rateStars">
+        <button class="rate-star" data-value="1" type="button" aria-label="1 bintang"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 7 1-5 4.9 1.2 6.9-6.3-3.3-6.3 3.3 1.2-6.9-5-4.9 7-1Z"/></svg></button>
+        <button class="rate-star" data-value="2" type="button" aria-label="2 bintang"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 7 1-5 4.9 1.2 6.9-6.3-3.3-6.3 3.3 1.2-6.9-5-4.9 7-1Z"/></svg></button>
+        <button class="rate-star" data-value="3" type="button" aria-label="3 bintang"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 7 1-5 4.9 1.2 6.9-6.3-3.3-6.3 3.3 1.2-6.9-5-4.9 7-1Z"/></svg></button>
+        <button class="rate-star" data-value="4" type="button" aria-label="4 bintang"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 7 1-5 4.9 1.2 6.9-6.3-3.3-6.3 3.3 1.2-6.9-5-4.9 7-1Z"/></svg></button>
+        <button class="rate-star" data-value="5" type="button" aria-label="5 bintang"><svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 2 3.1 6.3 7 1-5 4.9 1.2 6.9-6.3-3.3-6.3 3.3 1.2-6.9-5-4.9 7-1Z"/></svg></button>
+      </div>
+      <textarea id="rateComment" placeholder="Tulis ulasan (opsional)"></textarea>
+      <div class="rate-error" id="rateError"></div>
+      <div class="rate-actions">
+        <button class="rate-cancel" onclick="closeRatingModal()" type="button">Batal</button>
+        <button class="rate-save" id="rateSubmit" type="button">Kirim Rating</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      var themeLabel = document.getElementById('themeLabel');
+      var themeToggle = document.getElementById('themeToggle');
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+          themeToggle.classList.add('off');
+          themeLabel.textContent = 'Mode Terang';
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          themeToggle.classList.remove('off');
+          themeLabel.textContent = 'Mode Gelap';
+        }
+      }
+
+      var sidebar = document.querySelector('.sidebar');
+      var overlay = document.getElementById('sidebarOverlay');
+      document.getElementById('hamburger').addEventListener('click', function () {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+      });
+      overlay.addEventListener('click', function () {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      });
+
+      var chip = document.getElementById('userChip');
+      var drop = document.getElementById('profileDropdown');
+      chip.addEventListener('click', function (e) {
+        e.stopPropagation();
+        chip.classList.toggle('open');
+        drop.classList.toggle('active');
+      });
+      document.addEventListener('click', function (e) {
+        if (!chip.contains(e.target) && !drop.contains(e.target)) {
+          chip.classList.remove('open');
+          drop.classList.remove('active');
+        }
+      });
+
+      themeToggle.addEventListener('click', function () {
+        var cur = document.documentElement.getAttribute('data-theme');
+        var nxt = cur === 'light' ? 'dark' : 'light';
+        localStorage.setItem('rv-theme', nxt);
+        applyTheme(nxt);
+      });
+
+      applyTheme(localStorage.getItem('rv-theme') || 'dark');
+
+      // ponytail: fetch profil diam-diam gagal kalau API belum ada, fallback ke nama statis
+      fetch('/pkk/api/auth/check.php').then(function (r) { return r.json(); }).then(function (data) {
+        if (!data.logged_in || !data.user) return;
+        document.getElementById('profileName').textContent = data.user.name;
+        document.getElementById('profileEmail').textContent = data.user.email;
+        document.getElementById('userNameTop').textContent = data.user.name;
+        document.getElementById('profileRole').textContent = data.user.role.charAt(0).toUpperCase() + data.user.role.slice(1);
+        var initials = data.user.name.split(' ').map(function (w) { return w[0]; }).slice(0, 2).join('').toUpperCase();
+        document.querySelectorAll('.user-chip img, .profile-avatar').forEach(function (img) {
+          img.style.display = 'none';
+          var div = document.createElement('div');
+          div.style.cssText = 'width:34px;height:34px;border-radius:50%;background:var(--accent-grad);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;';
+          if (img.classList.contains('profile-avatar')) { div.style.width = '48px'; div.style.height = '48px'; div.style.fontSize = '17px'; div.style.borderRadius = '50%'; }
+          div.textContent = initials;
+          img.parentNode.insertBefore(div, img);
+        });
+      }).catch(function () {});
+    })();
+  </script>
+</body>
+</html>

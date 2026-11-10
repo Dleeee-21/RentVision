@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RentVision — Detail Produk</title>
+  <link rel="icon" type="image/png" sizes="256x256" href="/pkk/rentvision-favicon.png">
+  <link rel="stylesheet" href="detail.css?v=2">
+</head>
+
+<body>
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">
+          <img src="../Rentvision logo.png" alt="RentVision">
+        </div> 
+        <div class="brand-name">Rent<span>Vision</span></div>
+      </div>
+
+      <nav class="nav-group">
+        <a class="nav-item active" href="../index.php">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9.5 12 3l9 6.5V21a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-item" href="jelajahi.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="13" r="4" />
+            <path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z" />
+          </svg>
+          Jelajahi Gear
+        </a>
+        <a class="nav-item" href="booking.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="M16 2v4M8 2v4M3 10h18" />
+          </svg>
+          Booking Saya
+        </a>
+        <a class="nav-item" href="wishlist.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9Z" />
+          </svg>
+          Wishlist
+        </a>
+        <a class="nav-item" href="ulasan.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m12 2 3.1 6.3 7 1-5 4.9 1.2 6.9-6.3-3.3-6.3 3.3 1.2-6.9-5-4.9 7-1Z" />
+          </svg>
+          Ulasan
+        </a>
+      </nav>
+
+      <div class="nav-divider"></div>
+
+      <nav class="nav-group">
+        <a class="nav-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="7" width="18" height="13" rx="2" />
+            <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18" />
+          </svg>
+          Menjadi Partner
+        </a>
+
+
+        <div class="toggle-row">
+          <div class="left">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+            </svg>
+            <span id="themeLabelSidebar">Mode Gelap</span>
+          </div>
+          <div class="switch" id="themeToggleSidebar"></div>
+        </div>
+
+        <div class="promo-card">
+          <h4>Butuh Gear Profesional?</h4>
+          <p>Sewa peralatan fotografi terbaik untuk hasil terbaik.</p>
+          <a class="btn-solid" href="../index.php">Jelajahi Sekarang</a>
+        </div>
+
+        <div class="footnote"> 2026 RentVision<br>All rights reserved.</div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="main-area">
+
+
+      <header class="site-header">
+        <div class="header-inner">
+          <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+            <span></span><span></span><span></span>
+          </button>
+
+          <div class="search-wrapper" id="searchWrapper">
+            <div class="search-box">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+              <input type="text" id="searchInput" placeholder="Cari kamera, brand..." autocomplete="off"
+                class="search-input" />
+              <button id="searchClear" class="search-clear" aria-label="Hapus pencarian">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M18 6 6 18M6 6l12 12" />
+                </svg>
+              </button>
+              <kbd class="search-kbd">/</kbd>
+            </div>
+
+            <div id="searchDropdown" class="search-dropdown custom-scroll hidden">
+              <div class="search-dropdown-inner">
+                <p class="search-dropdown-label">Produk</p>
+                <div id="searchResults" class="search-results"></div>
+              </div>
+              <div id="searchEmpty" class="search-empty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.3-4.3" />
+                  <path d="M8 11h6" />
+                </svg>
+                <p>Tidak ditemukan</p>
+                <span>Coba kata kunci lain</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="avatar" aria-label="Profil">FB</div>
+        </div>
+      </header>
+
+      <main class="main-content">
+
+
+        <section id="infoState" class="info-state">
+          <div class="info-state-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+          </div>
+          <h1>Detail Produk Kamera</h1>
+          <p>Cari kamera menggunakan search bar di atas, lalu klik untuk melihat detail spesifikasi teknisnya.</p>
+          <div class="info-shortcuts">
+            <span class="info-shortcut"><kbd>/</kbd> Cari</span>
+            <span class="info-shortcut"><kbd>Esc</kbd> Tutup</span>
+          </div>
+        </section>
+
+
+        <section id="detailCard" class="hidden"></section>
+
+      </main>
+
+    </div>
+  </div>
+
+  <script>
+
+    let products = [];
+
+    const condMap = { 'baru': 'Baru', 'bekas': 'Bekas', 'sebagus_baru': 'Seperti Baru' };
+    const PLACEHOLDER_IMG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400'><rect width='600' height='400' fill='%23161822'/><g fill='none' stroke='%232e3440' stroke-width='2'><rect x='190' y='150' width='220' height='130' rx='10'/><circle cx='300' cy='215' r='40'/><path d='M245 150l15-25h80l15 25'/></g></svg>";
+
+    function toDetailProduct(row) {
+      const priceDay = Math.round(Number(row.price_per_day) || 0);
+      const loc = row.location || row.provider_location || 'Jakarta Selatan';
+      return {
+        id: Number(row.id),
+        name: row.name,
+        brand: row.store_name || '',
+        providerSlug: row.provider_slug || '',
+        category: row.category_name || 'Produk',
+        price: fmtRp(priceDay),
+        priceUnit: '/ hari',
+        img: row.thumbnail || PLACEHOLDER_IMG,
+        rating: Number(row.rating) || 0,
+        reviewCount: Number(row.total_reviews) || 0,
+        location: loc,
+        desc: row.description || '',
+        specs: [
+          { label: 'Tipe', value: row.category_name || '-' },
+          { label: 'Kondisi', value: condMap[row.condition] || row.condition || '-' },
+          { label: 'Lokasi', value: loc },
+          { label: 'Stok', value: Number(row.stock) + ' unit' },
+          { label: 'Deposit', value: fmtRp(Math.round(Number(row.deposit) || 0)) }
+        ]
+      };
+    }
+
+    async function loadProducts() {
+      try {
+        const res = await fetch('../api/products.php?per_page=50&available=1');
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        products = (data.items || []).map(toDetailProduct);
+      } catch (e) {
+        console.error('Gagal memuat produk:', e);
+      }
+    }
+
+
+    const input = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('searchClear');
+    const dropdown = document.getElementById('searchDropdown');
+    const wrapper = document.getElementById('searchWrapper');
+    const resultsEl = document.getElementById('searchResults');
+    const emptyEl = document.getElementById('searchEmpty');
+    const infoState = document.getElementById('infoState');
+    const detailCard = document.getElementById('detailCard');
+
+    let durasi = 3;
+    let currentDayPrice = 0;
+
+    function fmtRp(n) {
+      return 'Rp ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function highlight(text, query) {
+      if (!query) return text;
+      const safe = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      return text.replace(new RegExp('(' + safe + ')', 'gi'), '<mark>$1</mark>');
+    }
+
+    function toggle(el, show) {
+      el.classList.toggle('hidden', !show);
+    }
+
+
+    function renderSearch(query) {
+      const q = query.trim().toLowerCase();
+      let filtered = products;
+      if (q) filtered = products.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.brand.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q)
+      );
+
+      if (q && filtered.length === 0) {
+        toggle(emptyEl, true);
+        resultsEl.innerHTML = '';
+        return;
+      }
+      toggle(emptyEl, false);
+
+      resultsEl.innerHTML = filtered.slice(0, 6).map(p =>
+        '<button data-id="' + p.id + '" class="search-result-btn">' +
+        '<img src="' + p.img + '" alt="' + p.name + '" class="result-thumb" loading="lazy">' +
+        '<div class="result-info">' +
+        '<div class="result-name">' + highlight(p.name, q) + '</div>' +
+        '<div class="result-meta">' +
+        '<span class="result-cat">' + p.category + '</span>' +
+        '<span class="result-brand">' + highlight(p.brand, q) + '</span>' +
+        '</div>' +
+        '</div>' +
+        '<span class="result-price">' + p.price + '</span>' +
+        '</button>'
+      ).join('');
+
+      resultsEl.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = parseInt(btn.dataset.id);
+          showDetail(id);
+          dropdown.classList.add('hidden');
+          dropdown.classList.remove('show');
+          input.blur();
+        });
+      });
+    }
+
+    function showDetail(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+
+      durasi = 3;
+      currentDayPrice = parseInt(p.price.replace(/\D/g, ''), 10) || 0;
+
+      input.value = p.name;
+      toggle(clearBtn, true);
+
+      toggle(infoState, false);
+      toggle(detailCard, true);
+
+      const specIcons = {
+        'Sensor': 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z',
+        'Prosesor': 'M22 12h-4l-3 9L9 3l-3 9H2',
+        'Resolusi Video': 'M15 10l4.5-2.5v9L15 14M3 8h10a1 1 0 011 1v6a1 1 0 01-1 1H3a1 1 0 01-1-1V9a1 1 0 011-1z',
+        'Tipe': 'M4 8h3l1.5-2h7L17 8h3a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1z',
+        'Focal Length': 'M12 2v20M2 12h20',
+        'Aperture': 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z',
+        'Konstruksi': 'M12 2l-5 9 5 9 5-9z',
+        'AF Motor': 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
+        'Berat': 'M12 2l9 7-3.5 9h-11L3 9z',
+        'Daya': 'M13 2L3 14h9l-1 8 10-12h-9l1-8z',
+        'Guide Number': 'M12 2l-5 9 5 9 5-9z',
+        'Recycle Time': 'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 6v6l4 2',
+        'HSS': 'M9 11l3 3L22 4',
+        'Baterai': 'M4 7h16v10H4zM7 4h10v3H7z',
+        'Bobot': 'M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z',
+        'Waktu Terbang': 'M12 2l-5 9 5 9 5-9z',
+        'Jarak': 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z',
+        'Kondisi': 'M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6zM9 12l2 2 4-4',
+        'Lokasi': 'M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0zM12 10m-3 0a3 3 0 106 0 3 3 0 10-6 0',
+        'Stok': 'M12 2l10 6-10 6L2 8zM2 16l10 6 10-6',
+        'Deposit': 'M2 8a2 2 0 012-2h16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2zM2 11h20'
+      };
+
+      detailCard.innerHTML = '<div class="detail-enter">' +
+
+
+        '<div class="product-hero">' +
+        '<div class="product-info">' +
+        '<span class="category-badge">' + p.category + (p.category === 'Kamera' ? ' MIRRORLESS' : '') + '</span>' +
+        '<h1 class="product-title">' + p.name + '</h1>' +
+        '<div class="product-price">' +
+        '<span class="price-amount">' + p.price + '</span>' +
+        '<span class="price-unit">' + p.priceUnit + '</span>' +
+        '</div>' +
+        '<div class="product-rating">' +
+        '<span class="stars">&#9733; ' + p.rating.toFixed(1) + '</span>' +
+        '<span class="rating-count">(' + p.reviewCount + ')</span>' +
+        '<span class="rating-divider"></span>' +
+        '<span class="rating-location">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px">' +
+        '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>' +
+        '<circle cx="12" cy="10" r="3"/>' +
+        '</svg>' +
+        p.location +
+        '</span>' +
+        '</div>' +
+        (p.brand ? '<div class="product-store"><a href="store.php?slug=' + p.providerSlug + '">' + p.brand + '</a></div>' : '') +
+        '<p class="product-desc">' + p.desc + '</p>' +
+        '<div class="rent-duration">' +
+        '<div class="rent-duration-head">' +
+        '<span class="rent-duration-bar"></span>' +
+        '<span class="rent-duration-title">Durasi Sewa</span>' +
+        '</div>' +
+        '<div class="rent-duration-body">' +
+        '<div class="rent-stepper">' +
+        '<button type="button" class="rent-step-btn" id="rentMinus" aria-label="Kurangi durasi">−</button>' +
+        '<span class="rent-value"><strong id="rentValue">' + durasi + '</strong><span class="rent-value-unit">hari</span></span>' +
+        '<button type="button" class="rent-step-btn" id="rentPlus" aria-label="Tambah durasi">+</button>' +
+        '</div>' +
+        '<div class="rent-total-block">' +
+        '<span class="rent-total-label">Total Sewa</span>' +
+        '<strong class="rent-total" id="rentTotal">' + fmtRp(currentDayPrice * durasi) + '</strong>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="action-bar">' +
+        '<button class="btn-primary" onclick="event.stopPropagation();location.href=\'pembayaran.html?id=' + p.id + '&durasi=' + durasi + '\'">Sewa Sekarang</button>' +
+        '<button class="btn-bookmark" aria-label="Tambah ke wishlist">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/>' +
+        '</svg>' +
+        '</button>' +
+        '</div>' +
+        '</div>' +
+        '<div class="product-visual">' +
+        '<figure>' +
+        '<img src="' + p.img + '" alt="' + p.name + ' — ' + p.category + '" class="product-img" />' +
+        '</figure>' +
+        '</div>' +
+        '</div>' +
+
+
+        '<div class="specs-section">' +
+        '<div class="specs-header">' +
+        '<div class="specs-bar"></div>' +
+        '<h3>Spesifikasi Teknis</h3>' +
+        '</div>' +
+        '<div class="specs-grid">' +
+        p.specs.map(s => {
+          const icon = specIcons[s.label] || 'M12 2l-5 9 5 9 5-9z';
+          return '<div class="spec-card">' +
+            '<div class="spec-card-header">' +
+            '<div class="spec-icon">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="' + icon + '"/></svg>' +
+            '</div>' +
+            '<span class="spec-label">' + s.label + '</span>' +
+            '</div>' +
+            '<p class="spec-value">' + s.value + '</p>' +
+            '</div>';
+        }).join('') +
+        '</div>' +
+        '</div>' +
+        '<div class="reviews-section" id="productReviews">' +
+        '<div class="reviews-head"><h3>Ulasan</h3></div>' +
+        '<p class="reviews-empty">Ulasan kosong</p>' +
+        '<div class="reviews-list" id="reviewList" style="display:none;"></div>' +
+        '</div>' +
+        '</div>';
+
+      wireRentStepper();
+      wireBookmark(p.id);
+    }
+
+
+    function updateRent() {
+      document.getElementById('rentTotal').textContent = fmtRp(currentDayPrice * durasi);
+      document.getElementById('rentValue').textContent = durasi;
+    }
+
+    function wireRentStepper() {
+      document.getElementById('rentMinus').addEventListener('click', () => {
+        if (durasi > 1) { durasi--; updateRent(); }
+      });
+      document.getElementById('rentPlus').addEventListener('click', () => {
+        if (durasi < 30) { durasi++; updateRent(); }
+      });
+    }
+
+
+    const wishlistDetailIds = new Set();
+
+    async function loadWishlistDetail() {
+      try {
+        const res = await fetch('../api/wishlist.php');
+        if (res.status === 401) return;
+        const data = await res.json();
+        (data.wishlists || []).forEach(w => wishlistDetailIds.add(Number(w.product_id)));
+      } catch (e) { }
+    }
+
+    function wireBookmark(productId) {
+      const btn = document.querySelector('.btn-bookmark');
+      if (!btn) return;
+      btn.classList.toggle('liked', wishlistDetailIds.has(productId));
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const wasLiked = btn.classList.contains('liked');
+        btn.classList.toggle('liked');
+        try {
+          const res = await fetch('../api/wishlist.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ product_id: productId })
+          });
+          if (res.status === 401) {
+            window.location.href = 'login.php?redirect=' + encodeURIComponent('/pkk/pages/detail.html');
+            return;
+          }
+          if (!res.ok) { btn.classList.toggle('liked', wasLiked); return; }
+          const data = await res.json();
+          if (data.action === 'added') wishlistDetailIds.add(productId);
+          else wishlistDetailIds.delete(productId);
+        } catch (err) {
+          btn.classList.toggle('liked', wasLiked);
+        }
+      });
+    }
+
+
+    input.addEventListener('input', () => {
+      const v = input.value;
+      toggle(clearBtn, v.length > 0);
+      dropdown.classList.remove('hidden');
+      dropdown.classList.add('show');
+      renderSearch(v);
+    });
+
+    input.addEventListener('focus', () => {
+      dropdown.classList.remove('hidden');
+      dropdown.classList.add('show');
+      renderSearch(input.value);
+    });
+
+    clearBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      input.value = '';
+      toggle(clearBtn, false);
+      input.focus();
+      renderSearch('');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!wrapper.contains(e.target)) {
+        dropdown.classList.add('hidden');
+        dropdown.classList.remove('show');
+      }
+    });
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        dropdown.classList.add('hidden');
+        dropdown.classList.remove('show');
+        input.blur();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== input && !document.querySelector('input:focus, textarea:focus')) {
+        e.preventDefault();
+        input.focus();
+      }
+    });
+
+
+    const params = new URLSearchParams(window.location.search);
+    const initId = params.get('id') ? parseInt(params.get('id')) : 1;
+    Promise.all([loadProducts(), loadWishlistDetail()]).then(() => showDetail(initId));
+
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarOver = document.getElementById('sidebarOverlay');
+    const hamburger = document.getElementById('hamburgerBtn');
+
+    hamburger.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      sidebarOver.classList.toggle('active');
+    });
+    sidebarOver.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      sidebarOver.classList.remove('active');
+    });
+
+    const themeSw = document.getElementById('themeToggleSidebar');
+    const themeLb = document.getElementById('themeLabelSidebar');
+
+    function applySidebarTheme(theme) {
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeSw.classList.add('off');
+        themeLb.textContent = 'Mode Terang';
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        themeSw.classList.remove('off');
+        themeLb.textContent = 'Mode Gelap';
+      }
+    }
+
+    themeSw.addEventListener('click', () => {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const nxt = cur === 'light' ? 'dark' : 'light';
+      localStorage.setItem('rv-theme', nxt);
+      applySidebarTheme(nxt);
+    });
+
+    const saved = localStorage.getItem('rv-theme') || 'dark';
+    applySidebarTheme(saved);
+  </script>
+
+  <script src="vendor-nav.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+/* ===== RentVision Vendor Panel ===== */
+
+.vendor-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.vendor-sidebar {
+  background: var(--bg-panel, #14161f);
+  border-right: 1px solid var(--border, #262a3a);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 22px 18px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.vendor-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vendor-nav .vn-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-dim, #a3a7bd);
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.vendor-nav .vn-link svg { width: 18px; height: 18px; flex-shrink: 0; }
+.vendor-nav .vn-link:hover { background: rgba(124,92,252,.08); color: var(--text, #e9eaf2); }
+.vendor-nav .vn-link.active {
+  color: var(--text, #e9eaf2);
+  background: linear-gradient(135deg, rgba(124,92,252,.18), rgba(91,140,255,.10));
+}
+
+.vendor-nav .vn-link.danger { color: var(--error, #ff5c6c); }
+
+.vendor-main { padding: 28px 32px; overflow-y: auto; }
+
+.vendor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.vendor-head h1 { font-size: 22px; font-weight: 800; margin: 0; }
+.vendor-head .sub { font-size: 13px; color: var(--text-dim, #a3a7bd); }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+.stat-card { background: var(--bg-panel, #171a24); border: 1px solid var(--border, #262a3a); border-radius: 14px; padding: 18px; }
+.stat-label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text-dimmer, #6c7086); }
+.stat-value { font-size: 26px; font-weight: 800; margin-top: 6px; }
+.stat-value.accent {
+  background: linear-gradient(135deg, #7c5cfc, #5b8cff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 640px) {
+  .vendor-layout { grid-template-columns: 1fr; }
+  .vendor-sidebar { position: static; height: auto; }
+}
